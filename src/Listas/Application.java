@@ -1,30 +1,33 @@
 package Listas;
 
-import java.util.Scanner;
 
 public class Application {
 
 	public static void main(String[] args) {
-		
-		Scanner ler = new Scanner(System.in);
 
-		Aluno a1 = new Aluno("Antony");
-		Aluno a2 = new Aluno("Jaala");
+		/*Instanciando a classe genérica Vetor e nesse momento informando
+		que ela é do tipo Aluno*/
+		Vetor<Aluno> listaAlunos = new Vetor<Aluno>(4);
 		
-		Vetor lista = new Vetor();
+		//Instanciando um aluno
+		Aluno a = new Aluno("ANA", 30);
+		Aluno a2 = new Aluno("MARIA", 35);
+		Aluno a3 = new Aluno("ANTONY", 21);
 		
-		lista.adiciona(a1);
-		lista.adiciona(a2);
-		lista.adiciona(new Aluno("Fulano"));
+		//Adicionando o aluno no vetor
+		listaAlunos.Adicionar(a);
+		listaAlunos.Adicionar(a2);
+		listaAlunos.Adicionar(a3);
 		
-		System.out.println(lista);
-		System.out.println("O Tamanho do vetor é: " + lista.tamanho());
-		System.out.print("Digite o nome de um Aluno para pesquisar se ele está na lista: ");
-		String nome = ler.nextLine();
-		if (lista.contem(nome) == true) {
-			System.out.println("O Aluno(a)" + nome + " Está na lista!");
-		}
 		
+		//imprimindo os dados do aluno
+		listaAlunos.listarDados();
+		
+		listaAlunos.Remover(1);
+		
+		listaAlunos.listarDados();
+
+
 		
 	}
 
