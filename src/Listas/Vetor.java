@@ -82,7 +82,19 @@ public class Vetor<T> {
     public void Remover(int posicao) throws ArrayIndexOutOfBoundsException {
 
     	try {
-        	this.vetor[posicao] = null;
+        	Iterador<T> it = new Iterador<>(vetor);
+    		int i = posicao;
+
+    		while (it.hasNext() && this.qntElementos - 1 > i) {
+				if (it.next() != null) {
+					vetor[i] = vetor[i+1];
+					i++;
+					
+				}
+			}
+    		this.qntElementos--;
+			vetor[qntElementos] = null;
+        	
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.out.println("Posição para remoção Inválida!");
 		}

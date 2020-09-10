@@ -13,11 +13,13 @@ public class Application {
 		Aluno a = new Aluno("ANA", 30);
 		Aluno a2 = new Aluno("MARIA", 35);
 		Aluno a3 = new Aluno("ANTONY", 21);
+		Aluno a4 = new Aluno("JAALA", 21);
 		
 		//Adicionando o aluno no vetor
 		listaAlunos.Adicionar(a);
 		listaAlunos.Adicionar(a2);
 		listaAlunos.Adicionar(a3);
+		listaAlunos.Adicionar(a4);
 		
 		
 		//imprimindo os dados do aluno
@@ -26,6 +28,8 @@ public class Application {
 		listaAlunos.Remover(1);
 		
 		listaAlunos.listarDados();
+		
+
 
 
 		
