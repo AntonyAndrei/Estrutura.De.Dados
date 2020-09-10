@@ -3,6 +3,7 @@ package Listas;
 public class Vetor<T> {
 
     private T[] vetor;
+    private T[] vetor2;
 
     private int qntElementos = 0;
     private int tamanhoTotalVetor = 0;
@@ -11,6 +12,7 @@ public class Vetor<T> {
 	public Vetor(int tam) {
         
         //Criando um novo vetor genérico
+    	
         vetor = (T[]) new Object[tam]; 
         
         this.tamanhoTotalVetor = tam;
@@ -21,7 +23,6 @@ public class Vetor<T> {
         return vetor[pos] != null;
     }
 
-    //Método que retorna o valor de uma posição do vetor
     public T Recuperar(int pos) {
         if ((pos < 0 && pos > Tamanho()) || (!existeDado(pos))) {
             throw new ArrayIndexOutOfBoundsException("Posição Inválida");
@@ -29,22 +30,20 @@ public class Vetor<T> {
         return vetor[pos];
     }
 
-    //Método que verifica se o vetor está vazio
     public boolean vazio() {
         return Tamanho() == 0;
     }
 
-    public void Adicionar(T elemento) {
+    public void adicionaFinal(T elemento) {
 
         if (Tamanho() == vetor.length) {
             redimensionar();
         }
 
-        //Passamos o vetor como parâmetro para o iterador
         Iterador <T> it = new Iterador<>(vetor);
 
         int i=0;
-        while (it.hasNext()){ //percorrendo o vetor usando iterador
+        while (it.hasNext()){
         
             if (it.next() == null) {
                 vetor[i] =  elemento;
@@ -54,79 +53,184 @@ public class Vetor<T> {
             i++;
         }
     }
+    
+	public void adicionaInicio(T elemento) {
+
+		if (Tamanho() == vetor.length) {
+			redimensionar();
+		}
+
+		Iterador<T> it = new Iterador<>(vetor);
+		int i = this.qntElementos;
+
+		while (it.hasNext() && i >= 0) {
+
+			if (it.next() != null) {
+				vetor[i + 1] = vetor[i];
+				i--;
+			}
+		}
+		this.qntElementos++;
+		vetor[0] = elemento;
+	}
+	
+	public void adicionaNaPosicao(T elemento, int posicao) {
+
+		if (Tamanho() == vetor.length) {
+			redimensionar();
+		}
+
+		Iterador<T> it = new Iterador<>(vetor);
+		int i = this.qntElementos;
+
+		while (it.hasNext() && i > 0) {
+
+			if (it.next() != null) {
+				vetor[i + 1] = vetor[i];
+				i--;
+			}
+		}
+		this.qntElementos++;
+		vetor[posicao] = elemento;
+	}
 
 	public void listarDados() {
 
 		if (vazio()) {
 			System.out.println("Lista Vazia! Não ha nada pra Mostrar!");
-		}
+		} else {
 
-		Iterador<T> it = new Iterador<>(vetor);
-		int i = 0;
+			Iterador<T> it = new Iterador<>(vetor);
+			int i = 0;
 
-		System.out.print("[");
+			System.out.print("[");
 
-		while (it.hasNext()) {
-			if (it.next() != null) {
-				System.out.print(Recuperar(i));
-				i++;
-				if (i < qntElementos) {
-					System.out.print(", ");
+			while (it.hasNext()) {
+				if (it.next() != null) {
+					System.out.print(Recuperar(i));
+					i++;
+					if (i < qntElementos) {
+						System.out.print(", ");
+					}
 				}
 			}
+			System.out.println("] = " + this.qntElementos + "\n");
 		}
-		System.out.println("]\n");
 	}
 
-   //Método que remove do vetor em uma determinada posição
-    public void Remover(int posicao) throws ArrayIndexOutOfBoundsException {
+	public void Remover(int posicao) throws ArrayIndexOutOfBoundsException {
 
-    	try {
-        	Iterador<T> it = new Iterador<>(vetor);
-    		int i = posicao;
+		if (posicao >= this.qntElementos) {
+			System.out.println("Posição Para Remoção Já está vazia \n");
 
-    		while (it.hasNext() && this.qntElementos - 1 > i) {
+		} else {
+
+			try {
+				Iterador<T> it = new Iterador<>(vetor);
+				int i = posicao;
+
+				while (it.hasNext() && this.qntElementos - 1 > i) {
+
+					if (it.next() != null) {
+						vetor[i] = vetor[i + 1];
+						i++;
+					}
+				}
+				this.qntElementos--;
+				vetor[qntElementos] = null;
+
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println("Posição para remoção Inválida!");
+			}
+
+		}
+	}
+ 
+	public void RemoverInicio() {
+
+		if (this.qntElementos == 0) {
+			System.out.println("O Vetor já está vazio! \n");
+
+		} else {
+
+			Iterador<T> it = new Iterador<>(vetor);
+			int i = 0;
+
+			while (it.hasNext() && this.qntElementos - 1 > i) {
+
 				if (it.next() != null) {
-					vetor[i] = vetor[i+1];
+					vetor[i] = vetor[i + 1];
 					i++;
-					
 				}
 			}
-    		this.qntElementos--;
+			this.qntElementos--;
 			vetor[qntElementos] = null;
-        	
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("Posição para remoção Inválida!");
 		}
-    	
-    }
 
-    
- 
-    //Método que remove do início do vetor
-    public void RemoverInicio() {
+	}
 
-    }
+	public void RemoverFim() {
 
-    //Método que remove do fim do vetor
-    public void RemoverFim() {
+		if (this.qntElementos == 0) {
+			System.out.println("O Vetor já está vazio! \n");
 
-    }
+		} else {
+			this.qntElementos--;
+			vetor[qntElementos] = null;
+		}
+	}
 
-    
-    //Método que retorna o tamanho atual do vetor
     public int Tamanho() {
         return qntElementos;
     }
 
-    //Método que limpa/apaga todas as posições do vetor
     public void Limpar() {
+    	
+    	if (this.qntElementos == 0) {
+			System.out.println("O Vetor já está Limpo! \n");
 
+		} else {
+
+			Iterador<T> it = new Iterador<>(vetor);
+			int i = 0;
+
+			while (it.hasNext() && this.qntElementos - 1 > i) {
+
+				if (it.next() != null) {
+					vetor[i] = null;
+					i++;
+				}
+			}
+			this.qntElementos = 0;
+		}
     }
 
-    //Método que dobra o tamanho do vetor caso ele atinja o seu tamanho.
-    public void redimensionar(){
+    
+    
+    public int getQntElementos() {
+		return qntElementos;
+	}
 
+
+	//Método que dobra o tamanho do vetor caso ele atinja o seu tamanho maximo.
+    public void redimensionar(){
+    	
+    	vetor2 =  (T[]) new Object[this.vetor.length * 2];
+    	
+    	Iterador<T> it = new Iterador<>(vetor2);
+		int i = 0;
+
+		while (it.hasNext() && i < this.tamanhoTotalVetor) {
+
+			if (it.next() == null) {
+				vetor2[i] = vetor[i];
+				i++;
+			}
+			
+		}
+
+		vetor = vetor2;
+		
     }
     
     
