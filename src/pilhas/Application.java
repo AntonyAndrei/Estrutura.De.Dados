@@ -1,38 +1,37 @@
 package pilhas;
 
-import java.util.Scanner;
-
 public class Application {
 
 	public static void main(String[] args) {
+
+		/*Instanciando a classe genérica Vetor e nesse momento informando
+		que ela é do tipo Aluno*/
+		Pilha<Aluno> pilhaAlunos = new Pilha<Aluno>(4);
 		
-		Scanner ler = new Scanner(System.in);
+		//Instanciando um aluno
+		Aluno a = new Aluno("ANA", 30);
+		Aluno a2 = new Aluno("MARIA", 35);
+		Aluno a3 = new Aluno("ANTONY", 21);
+		Aluno a4 = new Aluno("JAALA", 21);
+		Aluno a5 = new Aluno("FULANO", 21);
+		Aluno a6 = new Aluno("CICLANO", 25);
 		
-		System.out.println("Digite o numero em Decimal para ser convertido em Binario: ");
-		int numero = ler.nextInt();
+		//Adicionando o aluno no vetor
+		pilhaAlunos.Push(a);
+		pilhaAlunos.Push(a2);
+		pilhaAlunos.Push(a3);
+		pilhaAlunos.Push(a4);
 		
-		Pilha pilha = new Pilha();
+		pilhaAlunos.listarDados();
+
+		pilhaAlunos.Pop();
 		
-		int resto;
+		pilhaAlunos.listarDados();
 		
-		while(numero != 0) {
-			resto = numero % 2; 		//pego o resto da divisao deste numero por 2 (0 ou 1)
-			pilha.empilhar(resto);		//armazeno na pilha
-			numero = numero/2;			// gero um novo numero, resultado da divisao dele por2
-			
-		}
+		pilhaAlunos.Limpar();
 		
-		System.out.println("O Numero Digitado Em Binario eh: ");
+		pilhaAlunos.listarDados();
 		
-		while(!pilha.estaVazia()) {
-			resto = pilha.desenpilhar(); //remove da pilha (Sempre quem esta no topo)
-			System.out.print(resto); 	 //joga na tela quem foi removido da pilha
-		}
-		
-		System.out.println("\n\nFim do programa");
-	
-		ler.close();
 	}
 
-	
 }

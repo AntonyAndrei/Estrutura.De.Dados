@@ -1,14 +1,15 @@
-package listasDuplamenteLigadas;
+package noCabeca;
 
-public class ListaDuplamenteLigada<T> {
+public class ListaDuplamenteLigadaComNoCabeca<T> {
 
-    private Celula inicio, fim;
+    private Celula inicio, fim, cabeca;
     private int tamanho;
 
-    public ListaDuplamenteLigada() {
+    public ListaDuplamenteLigadaComNoCabeca() {
         this.inicio = null;
-        this.fim = null;
-        this.tamanho = 0;
+        this.fim = null;  
+        this.cabeca = new Celula(null); 
+        this.tamanho = 0;      
     }
     
     private boolean existeDado (int posicao) {
@@ -16,16 +17,22 @@ public class ListaDuplamenteLigada<T> {
     }
 
     public void adicionaInicio(T elemento) {
+    	
         if (this.tamanho == 0) {
-        	Celula nova = new Celula(elemento);
-            inicio = fim = nova;
-            this.tamanho += 1;
+        	Celula nova = new Celula(elemento); 
+            cabeca.setProximo(nova);
+            cabeca.setAnterior(nova);
+            nova.setAnterior(cabeca);
+            nova.setProximo(cabeca);
         } else {
-        	Celula nova = new Celula(this.inicio, elemento);
-            inicio.setAnterior(nova);
-            inicio = nova;
-            this.tamanho += 1;
+        	Celula primeira = cabeca.getProximo();
+        	Celula nova = new Celula(elemento);
+        	nova.setAnterior(cabeca);
+        	cabeca.setProximo(nova);
+        	nova.setProximo(primeira);
+        	primeira.setAnterior(nova);
         }
+        this.tamanho += 1;
     }
     
     public void adicionaFim(T elemento) {
@@ -34,9 +41,11 @@ public class ListaDuplamenteLigada<T> {
 			this.adicionaInicio(elemento);
 		} else {
 			Celula nova = new Celula(elemento);
-			this.fim.setProximo(nova);
-			nova.setAnterior(fim);
-			this.fim = nova;
+			Celula ultima = cabeca.getAnterior();
+			nova.setProximo(cabeca);
+			cabeca.setAnterior(nova);
+			nova.setAnterior(ultima);
+			ultima.setProximo(nova);
 			this.tamanho++;
 		}
 
@@ -62,53 +71,6 @@ public class ListaDuplamenteLigada<T> {
 		}
 
 	}
-	
-	public void trocaPosicao (int posicao) {
-		if (tamanho == 0) {
-			System.out.println("Não existe Elemento para ser trocado de posição!");
-		} else {
-			if (tamanho == 1) {
-				System.out.println("O Unico elemento existente já é o primeiro e o ultimo!");
-			} else {
-				if (posicao == 0) {
-					Celula aSerTrocada = inicio;
-					Celula proxima = aSerTrocada.getProximo();
-					this.inicio = proxima;
-					fim.setProximo(aSerTrocada);
-					aSerTrocada.setAnterior(fim);
-					this.fim = aSerTrocada;
-				} else {
-					if (posicao == tamanho - 1) {
-						System.out.println("A Posição escolhida já é a ultima!");
-					} else {
-						Celula aSerTrocada = (Celula) this.RecuperaCelula(posicao);
-						Celula proxima = aSerTrocada.getProximo();
-						Celula anterior = aSerTrocada.getAnterior();
-						anterior.setProximo(proxima);
-						proxima.setAnterior(anterior);
-						fim.setProximo(aSerTrocada);
-						aSerTrocada.setAnterior(fim);
-						this.fim = aSerTrocada;
-					}
-				}
-			}
-		}
-		
-		
-		
-		
-	}
-	
-	
-    
-    public Celula pega (int posicao) {
-	 Celula atual = this.inicio;
-	 for (int i = 0; i < posicao; i++) {
-		atual = atual.getProximo();
-	}
-	 return atual;
-	   
-   }
 
     public T RecuperaAluno(int posicao) {
         
@@ -124,7 +86,7 @@ public class ListaDuplamenteLigada<T> {
             
         } else {
             
-            Iterador it = new Iterador(this.inicio);
+            Iterador it = new Iterador(cabeca.getProximo());
             int i = 0;
             while (it.hasNext()) {
                 if (i != posicao) {
@@ -153,7 +115,7 @@ public class ListaDuplamenteLigada<T> {
             
         } else {
             
-            Iterador it = new Iterador(this.inicio);
+            Iterador it = new Iterador(cabeca.getProximo());
             int i = 0;
             while (it.hasNext()) {
                 if (i != posicao) {
@@ -173,14 +135,16 @@ public class ListaDuplamenteLigada<T> {
         if (this.tamanho == 0) {
             System.out.println("A lista está vazia!");
             
-        } else if (inicio == fim) {
+        } else if (tamanho == 1) {
             
             inicio = fim = null;
             this.tamanho -= 1;
             
         } else {
-            
-            inicio = inicio.getProximo();
+            Celula primeira = cabeca.getProximo();
+            Celula proximo = primeira.getProximo();
+            cabeca.setProximo(proximo);
+            proximo.setAnterior(cabeca);
             this.tamanho -= 1;
         }
     }
@@ -190,16 +154,17 @@ public class ListaDuplamenteLigada<T> {
     	if (this.tamanho == 0) {
             System.out.println("A lista está vazia!");
             
-        } else if (inicio == fim) {
+        } else if (tamanho == 1) {
             
             inicio = fim = null;
             this.tamanho -= 1;
             
         } else {
             
-        	Celula penultima = this.fim.getAnterior();
-        	penultima.setProximo(null);
-            fim = penultima;
+        	Celula ultima = cabeca.getAnterior();
+        	Celula penultima = ultima.getAnterior();
+        	cabeca.setAnterior(penultima);
+        	penultima.setProximo(cabeca);
             this.tamanho -= 1;
         }
     }
@@ -238,6 +203,7 @@ public class ListaDuplamenteLigada<T> {
         this.tamanho = 0;
     }
     
+    
 	@Override
 	public String toString() {
 		
@@ -246,7 +212,7 @@ public class ListaDuplamenteLigada<T> {
 		}
 		
 		StringBuilder builder = new StringBuilder("[");
-		Celula atual = inicio;
+		Celula atual = cabeca.getProximo();
 		
 		for (int i = 0; i < tamanho - 1; i++) {
 			builder.append(atual.getElemento());
