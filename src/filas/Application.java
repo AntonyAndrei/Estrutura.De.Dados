@@ -53,7 +53,7 @@ public class Application {
         System.out.println("A fila está vazia? ");
         System.out.println(fila.isEmpty());
         System.out.println();
-        
+        System.out.println();
         
 
 		
